@@ -7,7 +7,7 @@
   <meta name="description" content="上海市综合机考模拟：60题限时考试、180题完整模拟与不限时随机练习，支持暂停存档、错题解析。">
   <title>市综合模拟 · 每一次练习，都更进一步</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=20261111">
+  <link rel="stylesheet" href="./style.css?v=20261111-2">
 </head>
 <body>
   <header class="topbar">
@@ -19,6 +19,7 @@
       <span class="nav-caption">我的备考空间</span>
       <nav aria-label="主导航">
         <button data-nav="home" class="nav-item active"><span class="nav-svg" id="nav-home-icon"></span>模拟中心</button>
+        <button data-nav="catalog" class="nav-item"><span class="nav-svg" id="nav-catalog-icon"></span>全部题库</button>
         <button data-nav="history" class="nav-item"><span class="nav-svg" id="nav-history-icon"></span>考试记录</button>
         <button data-nav="about" class="nav-item"><span class="nav-svg" id="nav-about-icon"></span>题库与说明</button>
       </nav>
@@ -32,8 +33,8 @@
   <dialog id="dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
   <input id="import-file" type="file" accept="application/json,.json" hidden>
   <noscript><p class="noscript">请启用 JavaScript 以进入模拟考场。</p></noscript>
-  <script src="./data.js?v=20261111"></script>
-  <script type="module" src="./app.js?v=20261111"></script>
+  <script src="./data.js?v=20261111-2"></script>
+  <script type="module" src="./app.js?v=20261111-2"></script>
   <script>setTimeout(function(){if(!window.__EXAM_READY__){var m=document.getElementById('main');if(m&&m.querySelector('.loading'))m.innerHTML='<div class="empty"><h1>页面没有加载完成</h1><p>请检查网络后刷新，已保存的答题进度会保留。</p><button onclick="location.reload()">重新加载</button></div>';}},12000);</script>
 </body>
 </html>

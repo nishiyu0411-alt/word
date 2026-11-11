@@ -1,15 +1,44 @@
 {
   "updated": "2026-11-11",
-  "base": 588,
+  "base": 730,
   "extra": 69,
   "categories": {
-    "logic": 181,
+    "logic": 199,
     "math": 331,
     "sentence": 11,
-    "language": 65
+    "language": 65,
+    "general": 124
   },
+  "sourceCounts": {
+    "logic": {
+      "total": 215,
+      "scored": 199,
+      "open": 14,
+      "disputed": 2,
+      "incomplete": 0,
+      "duplicates": 0
+    },
+    "word": {
+      "total": 217,
+      "scored": 200,
+      "open": 0,
+      "disputed": 0,
+      "incomplete": 17,
+      "duplicates": 0
+    },
+    "math": {
+      "total": 334,
+      "scored": 331,
+      "open": 0,
+      "disputed": 0,
+      "incomplete": 0,
+      "duplicates": 3
+    }
+  },
+  "referenceCount": 36,
+  "catalogCount": 1022,
   "psych": 187,
-  "rejected": 20,
+  "rejected": 2,
   "conflicts": [],
   "xcStats": {
     "xc-2023-03.md": {

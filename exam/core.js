@@ -1,14 +1,21 @@
-export const CATEGORY_NAMES={logic:'逻辑推理',math:'数学运算',sentence:'错句判断',language:'语言理解',psych:'心理问卷'};
+export const CATEGORY_NAMES={logic:'逻辑推理',math:'数学运算',sentence:'错句判断',language:'语言理解',general:'综合知识',psych:'心理问卷'};
 export const MODES={exam60:{name:'60题模拟考试',short:'标准模拟',count:60,minutes:60},full:{name:'180题完整模拟',short:'完整模拟',count:180,minutes:75},practice:{name:'随机60题练习',short:'自由练习',count:60,minutes:0}};
-export const DEFAULT_WEIGHTS={logic:30,math:30,sentence:15,language:25};
+export const DEFAULT_WEIGHTS={logic:30,math:30,sentence:10,language:20,general:10};
+export function normalizeWeights(w){
+ if(w&&validWeights(w))return {...w};
+ const oldKeys=['logic','math','sentence','language'];
+ if(w&&w.general==null&&oldKeys.every(k=>Number.isFinite(w[k])&&w[k]>=0)&&oldKeys.reduce((n,k)=>n+w[k],0)===100){const scaled=oldKeys.map(k=>({k,raw:w[k]*.9,value:Math.floor(w[k]*.9)}));let left=90-scaled.reduce((n,x)=>n+x.value,0);for(const x of [...scaled].sort((a,b)=>(b.raw-b.value)-(a.raw-a.value))){if(left--<=0)break;x.value++;}return {...Object.fromEntries(scaled.map(x=>[x.k,x.value])),general:10};}
+ return {...DEFAULT_WEIGHTS};
+}
+export function questionCatalog(bank){return [...bank.questions,...(bank.referenceQuestions||[]),...bank.personality];}
 export function random(){if(globalThis.crypto?.getRandomValues){const a=new Uint32Array(1);globalThis.crypto.getRandomValues(a);return a[0]/4294967296;}return Math.random();}
 export function shuffle(items,rng=random){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-export function validWeights(w){return Object.keys(DEFAULT_WEIGHTS).every(k=>Number.isFinite(w[k])&&w[k]>=0&&w[k]<=100)&&Object.values(w).reduce((s,n)=>s+n,0)===100;}
+export function validWeights(w){return !!w&&Object.keys(w).length===Object.keys(DEFAULT_WEIGHTS).length&&Object.keys(DEFAULT_WEIGHTS).every(k=>Number.isFinite(w[k])&&w[k]>=0&&w[k]<=100)&&Object.values(w).reduce((s,n)=>s+n,0)===100;}
 export function buildPaper(bank,mode,weights=DEFAULT_WEIGHTS,used=[],includeExtra=true,rng=random){
  if(!MODES[mode]||!validWeights(weights))throw Error('抽题比例合计须为100%');
  const old=new Set(used),pools={};
  for(const k of Object.keys(DEFAULT_WEIGHTS)){
-  const candidates=bank.questions.filter(q=>q.category===k&&(mode==='practice'&&includeExtra||q.origin==='existing'));
+  const candidates=bank.questions.filter(q=>q.category===k&&q.scoreEligible!==false&&(mode==='practice'&&includeExtra||q.origin==='existing'));
   pools[k]=[...shuffle(candidates.filter(q=>!old.has(q.id)),rng),...shuffle(candidates.filter(q=>old.has(q.id)),rng)];
  }
  const picked=[],fingerprints=new Set();
@@ -52,10 +59,12 @@ export function grade(s){
 }
 export function snapshot(s,now=Date.now()){const result=JSON.parse(JSON.stringify(s));if(s.status==='running')result.remainingMs=remaining(s,now)??0;result.updatedAt=now;return result;}
 export function recover(saved){const s=JSON.parse(JSON.stringify(saved));if(s.status==='running'){if(MODES[s.mode].minutes&&s.remainingMs<=0){s.deadline=Date.now();submit(s,true);}else{s.status='paused';s.deadline=null;}}return s;}
+const visibleQuestion=q=>JSON.stringify({id:q.id,category:q.category,subtype:q.subtype,stem:q.stem,options:q.options,answer:q.answer??null,explanation:q.explanation??null,material:q.material||'',origin:q.origin,sourceLabel:q.sourceLabel,sourceUrl:q.sourceUrl});
 export function validateSession(s,bank){
  if(!s||s.version!==1||!MODES[s.mode]||typeof s.id!=='string'||s.id.length>120||!Array.isArray(s.questions)||s.questions.length!==MODES[s.mode].count||!s.answers||typeof s.answers!=='object'||!['running','paused','submitted'].includes(s.status)||!Number.isFinite(s.remainingMs)||s.remainingMs<0||s.remainingMs>MODES[s.mode].minutes*60000||!Number.isInteger(s.index)||s.index<0||s.index>=s.questions.length)return false;
  const catalog=new Map([...bank.questions,...bank.personality].map(q=>[q.id,q]));const ids=new Set();
- for(let i=0;i<s.questions.length;i++){const q=s.questions[i],trusted=catalog.get(q?.id);if(!trusted||ids.has(q.id)||JSON.stringify(q)!==JSON.stringify(trusted))return false;if((i<60&&q.category==='psych')||(i>=60&&q.category!=='psych'))return false;if(s.answers[q.id]!=null&&!hasAnswer(q,s.answers[q.id]))return false;ids.add(q.id);}
+ for(let i=0;i<s.questions.length;i++){const q=s.questions[i],trusted=catalog.get(q?.id);if(!trusted||ids.has(q.id)||visibleQuestion(q)!==visibleQuestion(trusted))return false;if((i<60&&q.category==='psych')||(i>=60&&q.category!=='psych'))return false;if(s.answers[q.id]!=null&&!hasAnswer(q,s.answers[q.id]))return false;ids.add(q.id);}
  if(!Array.isArray(s.marks)||s.marks.some(id=>!ids.has(id))||Object.keys(s.answers).some(id=>!ids.has(id)))return false;
  return true;
 }
+export function canonicalSession(s,bank){if(!validateSession(s,bank))return null;const catalog=new Map([...bank.questions,...bank.personality].map(q=>[q.id,q]));return {...s,questions:s.questions.map(q=>catalog.get(q.id))};}
