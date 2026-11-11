@@ -1,0 +1,1 @@
+{"name":"shizonghe-exam","version":"1.0.0","type":"module","scripts":{"test":"node --test tools/core.test.mjs","build":"node tools/build-static.mjs"}}

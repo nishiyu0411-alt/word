@@ -1,0 +1,5 @@
+sources/
+node_modules/
+.DS_Store
+dist/__qa_*
+dist/

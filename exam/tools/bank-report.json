@@ -1,0 +1,40 @@
+{
+  "updated": "2026-11-11",
+  "base": 588,
+  "extra": 69,
+  "categories": {
+    "logic": 181,
+    "math": 331,
+    "sentence": 11,
+    "language": 65
+  },
+  "psych": 187,
+  "rejected": 20,
+  "conflicts": [],
+  "xcStats": {
+    "xc-2023-03.md": {
+      "parsed": 25,
+      "accepted": 25
+    },
+    "xc-2023-04.md": {
+      "parsed": 25,
+      "accepted": 3
+    },
+    "xc-2023-05.md": {
+      "parsed": 35,
+      "accepted": 7
+    },
+    "xc-2025-03.md": {
+      "parsed": 25,
+      "accepted": 25
+    },
+    "xc-2025-04.md": {
+      "parsed": 24,
+      "accepted": 1
+    },
+    "xc-2025-05.md": {
+      "parsed": 30,
+      "accepted": 8
+    }
+  }
+}

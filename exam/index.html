@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173b50">
+  <meta name="description" content="上海市综合机考模拟：60题限时考试、180题完整模拟与不限时随机练习，支持暂停存档、错题解析。">
+  <title>市综合模拟 · 每一次练习，都更进一步</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css?v=20261111">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="市综合模拟首页"><span class="brand-icon"><svg width="23" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3h11l3 3v15H5V3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 3v5h4M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span>市综合模拟<small>SHANGHAI · EXAM STUDIO</small></span></a>
+    <div class="topbar-right"><span class="autosave"><i></i> 答案自动保存</span><span class="avatar" aria-label="个人学习空间">习</span></div>
+  </header>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <span class="nav-caption">我的备考空间</span>
+      <nav aria-label="主导航">
+        <button data-nav="home" class="nav-item active"><span class="nav-svg" id="nav-home-icon"></span>模拟中心</button>
+        <button data-nav="history" class="nav-item"><span class="nav-svg" id="nav-history-icon"></span>考试记录</button>
+        <button data-nav="about" class="nav-item"><span class="nav-svg" id="nav-about-icon"></span>题库与说明</button>
+      </nav>
+      <div class="sidebar-note"><span class="tiny-label">A LITTLE EVERY DAY</span><p>稳稳地练习，<br>慢慢地靠近。</p><div class="note-line"></div><small>专注这一题，就很好。</small></div>
+      <div class="sidebar-bottom"><span class="version-dot"></span>市综合 · 机考练习空间<small>个人模拟，非官方考试平台</small></div>
+    </aside>
+    <main id="main" tabindex="-1"><div class="loading"><span class="spinner"></span>正在整理你的模拟考场…</div></main>
+  </div>
+  <div id="clock-root"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <noscript><p class="noscript">请启用 JavaScript 以进入模拟考场。</p></noscript>
+  <script src="./data.js?v=20261111"></script>
+  <script type="module" src="./app.js?v=20261111"></script>
+  <script>setTimeout(function(){if(!window.__EXAM_READY__){var m=document.getElementById('main');if(m&&m.querySelector('.loading'))m.innerHTML='<div class="empty"><h1>页面没有加载完成</h1><p>请检查网络后刷新，已保存的答题进度会保留。</p><button onclick="location.reload()">重新加载</button></div>';}},12000);</script>
+</body>
+</html>
