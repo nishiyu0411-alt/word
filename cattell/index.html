@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7770b8">
+  <meta name="description" content="根据所提供的卡特尔16PF练习表制作，187道原题、逐题练习、完整测验、收藏与进度保存。">
+  <title>卡特尔人格练习 · 诗雨的练习室</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="data.js"></script>
+  <script defer src="core.js"></script>
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="卡特尔人格练习首页"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 20C4 14 10 5 16 9c6-4 12 5 8 11-2 3-5 5-8 7-3-2-6-4-8-7Z" stroke="currentColor" stroke-width="1.6"/><path d="m12 15 3 3 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>诗雨的练习室<small>CATTELL · 16PF</small></span></a>
+    <nav class="main-nav" aria-label="主要功能"><button class="nav-item active" data-view="practice">日常练习</button><button class="nav-item" data-view="exam">完整测验</button><button class="nav-item" data-view="report">练习报告</button></nav>
+    <button id="settingsButton" class="quiet settings-button" aria-label="打开保存与同步设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg><span>保存与同步</span></button>
+  </header>
+  <main class="page">
+    <section class="intro"><div><div class="eyebrow"><span></span>上海综合考试备考 · 题型熟悉</div><h1>卡特尔 16PF 人格练习<span class="title-dot">.</span></h1><p>从一题开始，按自己的真实情况作答。</p></div><div class="intro-stats"><div><strong>187</strong><span>道原题</span></div><div><strong>16</strong><span>个人格因素</span></div><div><strong id="overallDone">0</strong><span>题已练习</span></div></div></section>
+    <div id="appStatus" class="status-strip" role="status"><span class="saved-dot"></span><span id="saveStatus">本机自动保存已开启</span><button id="resumeButton" class="text-link">继续上次</button></div>
+    <section id="practiceView" class="workspace">
+      <aside class="sidebar">
+        <section class="panel range-panel"><div class="section-label">练习范围</div><div id="rangeButtons" class="range-list"></div><div class="factor-control"><label for="factorSelect">按人格因素练习</label><select id="factorSelect"><option value="all">全部因素与确认题</option></select></div><div class="session-actions"><button id="shuffleButton" class="quiet small">随机排序</button><button id="sequenceButton" class="quiet small">顺序练习</button></div></section>
+        <section class="panel daily-note"><span class="note-icon" aria-hidden="true">i</span><div><strong>作答小提示</strong><p>人格自述题没有统一正确答案。按平时的真实表现选择，不必追求每一项高分。</p></div></section>
+      </aside>
+      <div class="main-column"><section id="practiceCard" class="panel question-card" aria-label="练习题"></section><section class="panel palette-panel"><div class="palette-heading"><div><h2>题号导航</h2><p id="poolDescription">保留原表题号，点击即可跳转</p></div><div class="legend"><span><i class="answered"></i>已作答</span><span><i class="starred"></i>已收藏</span></div></div><div id="practicePalette" class="palette" aria-label="练习题号"></div></section></div>
+    </section>
+    <section id="examView" class="exam-layout" hidden></section>
+    <section id="reportView" class="report-layout" hidden></section>
+    <footer class="page-footer"><span>依据你提供的练习表制作 · 保留原题号与原表公式</span><button id="sourceButton" class="text-link">资料与计分说明</button></footer>
+  </main>
+  <dialog id="settingsDialog" class="settings-dialog"><div class="dialog-heading"><div><div class="eyebrow">让练习接着进行</div><h2>保存与同步</h2></div><button class="icon-button" data-close aria-label="关闭">×</button></div><div class="settings-content"><section><h3>换个设备，接着练</h3><p class="muted">手机与电脑输入同一同步码即可合并进度。请妥善保管同步码。</p><form id="syncForm"><label class="sr-only" for="syncCode">同步码，至少8位</label><div class="input-row"><input id="syncCode" type="password" minlength="8" maxlength="160" placeholder="设置同步码（至少 8 位）" autocomplete="off"><button class="primary" id="syncConnect" type="submit">连接并同步</button></div></form><p id="syncStatus" class="small-status" role="status">尚未连接，记录自动保存在本机。</p><div class="settings-row"><button id="syncNow" class="quiet small">立即同步</button><button id="disconnectSync" class="text-link">断开本机同步</button></div></section><section><h3>进度备份</h3><p class="muted">导出文件可保存作答、收藏及完整测验。导入时按作答时间合并。</p><div class="settings-row"><button id="exportButton" class="secondary">导出进度</button><button id="importButton" class="secondary">导入进度</button><input id="importFile" type="file" accept=".json,application/json" hidden></div></section><section><h3>练习偏好</h3><label class="toggle-row"><span>练习时显示选项计分<small>完整测验在交卷前始终隐藏计分</small></span><input id="showScoring" type="checkbox" role="switch"></label><label class="toggle-row"><span>作答后自动下一题<small>仅用于日常练习</small></span><input id="autoNext" type="checkbox" role="switch"></label></section><section class="danger-section"><button id="clearButton" class="text-link danger">清空本机全部记录</button><p class="muted">清空会断开本机同步，已保存的云端备份保留。</p></section></div></dialog>
+  <dialog id="sourceDialog" class="source-dialog"><div class="dialog-heading"><h2>资料与计分说明</h2><button class="icon-button" data-close aria-label="关闭">×</button></div><div id="sourceContent" class="settings-content"></div></dialog>
+  <dialog id="confirmDialog" class="confirm-dialog"><div class="dialog-heading"><h2 id="confirmTitle"></h2></div><p id="confirmText"></p><div class="confirm-actions"><button id="confirmCancel" class="secondary">取消</button><button id="confirmAccept" class="primary">确定</button></div></dialog>
+  <div id="toast" role="status" class="toast"></div>
+  <noscript><p class="panel">请启用浏览器 JavaScript 后使用此练习页面。</p></noscript>
+</body>
+</html>
